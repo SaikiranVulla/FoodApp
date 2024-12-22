@@ -14,6 +14,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import Feather from "@expo/vector-icons/Feather";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useLocalSearchParams, useRouter } from "expo-router";
+import CommonHeader from "../Components/CommonHeader";
 
 const RestuarantItem = [
   { label: "Burger", value: "Burger" },
@@ -154,7 +155,11 @@ const RestaurantScreen = () => {
       <FlatList
         ListHeaderComponent={
           <>
-            {renderHeader()}
+            {/* {renderHeader()} */}
+            <CommonHeader
+              screenName={"Restaurant View"}
+              fromScreen={"restaurant"}
+            />
             {renderFoodInfo()}
             <FlatList
               style={{ marginHorizontal: 12 }}

@@ -19,6 +19,7 @@ import {
 import { SIZES, COLORS, icons, images, FONTS } from "../../constants";
 
 import { inGridents } from "../../constants/DummyData";
+import CommonHeader from "../Components/CommonHeader";
 
 const dishesSizes = [10, 14, 16];
 
@@ -54,19 +55,7 @@ const DetailScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={COLORS.lightGray4} barStyle="dark-content" />
-      <View style={styles.backContainer}>
-        <TouchableOpacity
-          style={styles.backSubContainer}
-          onPress={() => navigation.back()}
-        >
-          <Ionicons name="chevron-back" size={24} color="black" />
-        </TouchableOpacity>
-        <View style={styles.mainTextView}>
-          <View>
-            <Text style={styles.mainText}>Details</Text>
-          </View>
-        </View>
-      </View>
+      <CommonHeader screenName={"Detail"} fromScreen={"Detail"} />
       <ScrollView
         style={styles.subMainView}
         showsVerticalScrollIndicator={false}

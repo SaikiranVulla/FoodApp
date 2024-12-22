@@ -7,56 +7,37 @@ import { useRouter } from "expo-router";
 const CommonHeader = ({ screenName, fromScreen }) => {
   const navigation = useRouter();
   return (
-    <View
-      style={{
-        flexDirection: "row",
-        // height: 50,
-        marginHorizontal: 12,
-        marginTop: 10,
-        alignItems: "center",
-      }}
-    >
+    <View style={styles.headerContainer}>
       <TouchableOpacity
-        style={{
-          width: 50,
-          aspectRatio: 1,
-          justifyContent: "center",
-          backgroundColor: "#171717",
-          borderRadius: 25,
-          alignItems: "center",
-        }}
+        style={[
+          styles.backButtonContainer,
+          {
+            backgroundColor:
+              fromScreen == "CartScreen" ? "#171717" : COLORS.lightGray3,
+          },
+        ]}
         onPress={() => navigation.back()}
       >
-        <Ionicons name="chevron-back" size={24} color="white" />
+        <Ionicons
+          name="chevron-back"
+          size={24}
+          color={fromScreen == "CartScreen" ? "white" : "black"}
+        />
       </TouchableOpacity>
-      <View style={{ flex: 1, justifyContent: "center", marginLeft: 10 }}>
+      <View style={styles.titleTextContainer}>
         <View>
           <Text
-            style={{
-              fontFamily: "NotoSans-Bold",
-              fontSize: 16,
-              fontWeight: "600",
-              letterSpacing: 1,
-              color: "white",
-            }}
+            style={[
+              styles.titleText,
+              { color: fromScreen == "CartScreen" ? "white" : "black" },
+            ]}
           >
             {screenName}
           </Text>
         </View>
       </View>
-      {/* <TouchableOpacity
-      activeOpacity={0.7}
-      style={{
-        width: 50,
-        justifyContent: "center",
-        backgroundColor: COLORS.lightGray3,
-        borderRadius: 25,
-        alignItems: "center",
-      }}
-    >
-      <Feather name="more-horizontal" size={24} color="black" />
-    </TouchableOpacity> */}
-      {fromScreen == "CartScreen" && (
+
+      {fromScreen == "CartScreen" ? (
         <Text
           style={{
             color: "green",
@@ -68,6 +49,18 @@ const CommonHeader = ({ screenName, fromScreen }) => {
         >
           DONE
         </Text>
+      ) : (
+        fromScreen !== "Detail" && (
+          <TouchableOpacity activeOpacity={0.7} style={styles.moreContainer}>
+            <Feather
+              name={
+                fromScreen == "restaurant" ? "more-horizontal" : "shopping-bag"
+              }
+              size={24}
+              color="black"
+            />
+          </TouchableOpacity>
+        )
       )}
     </View>
   );
@@ -75,4 +68,27 @@ const CommonHeader = ({ screenName, fromScreen }) => {
 
 export default CommonHeader;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  headerContainer: {
+    flexDirection: "row",
+    height: 50,
+    marginHorizontal: 12,
+    marginTop: 10,
+  },
+  backButtonContainer: {
+    width: 50,
+    justifyContent: "center",
+    backgroundColor: COLORS.lightGray3,
+    borderRadius: 25,
+    alignItems: "center",
+  },
+  titleTextContainer: { flex: 1, justifyContent: "center", marginLeft: 10 },
+  titleText: { fontSize: 16, fontWeight: "600" },
+  moreContainer: {
+    width: 50,
+    justifyContent: "center",
+    backgroundColor: COLORS.lightGray3,
+    borderRadius: 25,
+    alignItems: "center",
+  },
+});
