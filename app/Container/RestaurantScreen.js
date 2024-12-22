@@ -6,8 +6,8 @@ import {
   FlatList,
   Image,
   SafeAreaView,
-  Animated,
   ScrollView,
+  StatusBar,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SIZES, COLORS, icons, images, FONTS } from "../../constants";
@@ -71,22 +71,9 @@ const RestaurantScreen = () => {
 
   function renderHeader() {
     return (
-      <View
-        style={{
-          flexDirection: "row",
-          height: 50,
-          marginHorizontal: 12,
-          marginTop: 10,
-        }}
-      >
+      <View style={styles.headerContainer}>
         <TouchableOpacity
-          style={{
-            width: 50,
-            justifyContent: "center",
-            backgroundColor: COLORS.lightGray3,
-            borderRadius: 25,
-            alignItems: "center",
-          }}
+          style={styles.backButtonContainer}
           onPress={() =>
             navigation.navigate({
               pathname: "/Container/HomeScreen",
@@ -95,30 +82,12 @@ const RestaurantScreen = () => {
         >
           <Ionicons name="chevron-back" size={24} color="black" />
         </TouchableOpacity>
-        <View style={{ flex: 1, justifyContent: "center", marginLeft: 10 }}>
+        <View style={styles.titleTextContainer}>
           <View>
-            <Text
-              style={{
-                fontFamily: "NotoSans-Bold",
-                fontSize: 16,
-                fontWeight: "600",
-                letterSpacing: 1,
-              }}
-            >
-              Restuarant New
-            </Text>
+            <Text style={styles.titleText}>Restuarant New</Text>
           </View>
         </View>
-        <TouchableOpacity
-          activeOpacity={0.7}
-          style={{
-            width: 50,
-            justifyContent: "center",
-            backgroundColor: COLORS.lightGray3,
-            borderRadius: 25,
-            alignItems: "center",
-          }}
-        >
+        <TouchableOpacity activeOpacity={0.7} style={styles.moreContainer}>
           <Feather name="more-horizontal" size={24} color="black" />
         </TouchableOpacity>
       </View>
@@ -127,163 +96,27 @@ const RestaurantScreen = () => {
 
   function renderFoodInfo() {
     return (
-      // <Animated.ScrollView
-      //   horizontal
-      //   pagingEnabled
-      //   scrollEventThrottle={16}
-      //   showsHorizontalScrollIndicator={false}
-      //   snapToAlignment="center"
-      //   onScroll={Animated.event(
-      //     [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-      //     { useNativeDriver: false }
-      //   )}
-      // >
-      //   {restaurant?.menu.map((menuItem, index) => {
-      //     return (
-      //       <View key={index} style={{ alignItems: "center" }}>
-      //         <View style={{ height: SIZES.height * 0.3 }}>
-      //           <Image
-      //             source={menuItem.photo}
-      //             resizeMode="cover"
-      //             style={{ width: SIZES.width, height: "100%" }}
-      //           />
-      //           <View
-      //             style={{
-      //               position: "absolute",
-      //               flexDirection: "row",
-      //               bottom: -20,
-      //               width: SIZES.width,
-      //               height: 50,
-      //               justifyContent: "center",
-      //             }}
-      //           >
-      //             <TouchableOpacity
-      //               style={{
-      //                 width: 50,
-      //                 backgroundColor: COLORS.white,
-      //                 justifyContent: "center",
-      //                 alignItems: "center",
-      //                 borderTopLeftRadius: 25,
-      //                 borderBottomLeftRadius: 25,
-      //               }}
-      //               onPress={() => editOrder("-", menuItem)}
-      //             >
-      //               <Text style={{ ...FONTS.body1 }}>-</Text>
-      //             </TouchableOpacity>
-      //             <View
-      //               style={{
-      //                 width: 50,
-      //                 backgroundColor: COLORS.white,
-      //                 alignItems: "center",
-      //                 justifyContent: "center",
-      //               }}
-      //             >
-      //               <Text style={{ ...FONTS.h2 }}>
-      //                 {menuItem.qty !== undefined ? menuItem.qty : 0}
-      //               </Text>
-      //             </View>
-      //             <TouchableOpacity
-      //               style={{
-      //                 width: 50,
-      //                 backgroundColor: COLORS.white,
-      //                 borderTopRightRadius: 25,
-      //                 borderBottomRightRadius: 25,
-      //                 alignItems: "center",
-      //                 justifyContent: "center",
-      //               }}
-      //               onPress={() => editOrder("+", menuItem)}
-      //             >
-      //               <Text style={{ ...FONTS.body1 }}>+</Text>
-      //             </TouchableOpacity>
-      //           </View>
-      //         </View>
-      //         {/* Name and Price */}
-      //         <View
-      //           style={{
-      //             alignItems: "center",
-      //             width: SIZES.width,
-      //             marginTop: 30,
-      //             paddingHorizontal: SIZES.padding * 2,
-      //           }}
-      //         >
-      //           <Text style={{ ...FONTS.h3, textAlign: "center" }}>
-      //             {menuItem?.name} - $ {menuItem?.price.toFixed(2)}
-      //           </Text>
-      //           <Text
-      //             style={{ ...FONTS.body2, marginTop: 15, textAlign: "center" }}
-      //           >
-      //             {menuItem?.description}
-      //           </Text>
-      //         </View>
-      //         {/* Calories */}
-      //         <View
-      //           style={{
-      //             flexDirection: "row",
-      //             alignItems: "center",
-      //             marginTop: 15,
-      //           }}
-      //         >
-      //           <Image
-      //             source={icons.fire}
-      //             style={{ width: 25, height: 25 }}
-      //             resizeMode="cover"
-      //           />
-      //           <Text style={{ ...FONTS.body3, color: COLORS.darkgray }}>
-      //             {" "}
-      //             {menuItem?.calories.toFixed(2)} cal
-      //           </Text>
-      //         </View>
-      //       </View>
-      //     );
-      //   })}
-      // </Animated.ScrollView>
-      <View style={{ marginHorizontal: 12, marginTop: 20 }}>
+      <View style={styles.foodInfoContainer}>
         <Image
           source={restaurant?.photo}
           resizeMode="cover"
-          style={{ borderRadius: 10, height: 200, width: 360 }}
+          style={styles.mainRestaurantImage}
         />
-        <Text
-          style={{
-            fontSize: 18,
-            letterSpacing: 1,
-            fontWeight: "600",
-            marginTop: 10,
-          }}
-        >
-          {restaurant?.name}
-        </Text>
-        <Text
-          style={{
-            color: COLORS.darkgray,
-            letterSpacing: 0.8,
-            fontSize: 16,
-            fontWeight: "400",
-            textAlign: "justify",
-            marginTop: 6,
-          }}
-        >
+        <Text style={styles.restaurantName}>{restaurant?.name}</Text>
+        <Text style={styles.restaurantDescription}>
           Nestled in the heart of downtown, Flavor Haven is a cozy yet vibrant
           spot offering a fusion of global cuisines. Known for its eclectic
           menu, the restaurant features everything from hand-rolled sushi to
           wood-fired Neapolitan pizzas.
         </Text>
-        <View
-          style={{
-            flexDirection: "row",
-            marginTop: SIZES.padding,
-            alignItems: "center",
-          }}
-        >
+        <View style={styles.feedBackContainer}>
           <Image
             source={icons.star}
-            style={{ width: 25, height: 25 }}
+            style={styles.starImage}
             resizeMode="cover"
           />
-          <Text style={{ ...FONTS.body3, marginLeft: SIZES.padding }}>
-            {restaurant?.rating}
-          </Text>
-          <View style={{ flexDirection: "row", marginLeft: 16 }}>
+          <Text style={styles.starRating}>{restaurant?.rating}</Text>
+          <View style={styles.deliveryContainer}>
             <View
               style={{
                 flexDirection: "row",
@@ -482,7 +315,7 @@ const RestaurantScreen = () => {
       onPress={() => handlePress(item)}
       style={{
         backgroundColor:
-          selectedItem === item.label ? COLORS.primary : COLORS.white,
+          selectedItem === item.label ? COLORS.primary : COLORS.lightGray3,
         borderRadius: 30,
         width: 120,
         justifyContent: "center",
@@ -507,7 +340,6 @@ const RestaurantScreen = () => {
     <TouchableOpacity
       activeOpacity={0.7}
       onPress={() => {
-        console.log(item, "clickedmenu item");
         navigation.navigate({
           pathname: "/Container/DetailScreen",
           params: {
@@ -518,29 +350,11 @@ const RestaurantScreen = () => {
       }}
       style={styles.card}
     >
-      <Image
-        source={item.photo}
-        resizeMode="cover"
-        style={{
-          width: "100%",
-          height: 140,
-          marginBottom: 10,
-          borderTopLeftRadius: 6,
-          borderTopRightRadius: 6,
-        }}
-      />
+      <Image source={item.photo} resizeMode="cover" style={styles.itemIMage} />
       <Text numberOfLines={1} style={{ marginLeft: 4, marginBottom: 8 }}>
         {item.name}
       </Text>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginHorizontal: 6,
-          marginBottom: 10,
-        }}
-      >
+      <View style={styles.priceContainer}>
         <Text style={{ fontWeight: "700" }}>${item.price}</Text>
         <Ionicons name="add-circle-sharp" size={24} color={COLORS.primary} />
       </View>
@@ -548,7 +362,9 @@ const RestaurantScreen = () => {
   );
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightGray4 }}>
+    <SafeAreaView style={styles.container}>
+      \
+      <StatusBar backgroundColor={COLORS.lightGray4} barStyle="dark-content" />
       {/* HeaderBar */}
       {renderHeader()}
       <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
@@ -579,6 +395,58 @@ const RestaurantScreen = () => {
 export default RestaurantScreen;
 
 const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: COLORS.lightGray4 },
+  headerContainer: {
+    flexDirection: "row",
+    height: 50,
+    marginHorizontal: 12,
+    marginTop: 10,
+  },
+  backButtonContainer: {
+    width: 50,
+    justifyContent: "center",
+    backgroundColor: COLORS.lightGray3,
+    borderRadius: 25,
+    alignItems: "center",
+  },
+  titleTextContainer: { flex: 1, justifyContent: "center", marginLeft: 10 },
+  titleText: {
+    fontFamily: "NotoSans-Bold",
+    fontSize: 16,
+    fontWeight: "600",
+    letterSpacing: 1,
+  },
+  moreContainer: {
+    width: 50,
+    justifyContent: "center",
+    backgroundColor: COLORS.lightGray3,
+    borderRadius: 25,
+    alignItems: "center",
+  },
+  foodInfoContainer: { marginHorizontal: 12, marginTop: 20 },
+  mainRestaurantImage: { borderRadius: 10, height: 200, width: 360 },
+  restaurantName: {
+    fontSize: 18,
+    letterSpacing: 1,
+    fontWeight: "600",
+    marginTop: 10,
+  },
+  restaurantDescription: {
+    color: COLORS.darkgray,
+    letterSpacing: 0.6,
+    fontSize: 16,
+    fontWeight: "400",
+    textAlign: "justify",
+    marginTop: 6,
+  },
+  feedBackContainer: {
+    flexDirection: "row",
+    marginTop: SIZES.padding,
+    alignItems: "center",
+  },
+  starImage: { width: 25, height: 25 },
+  starRating: { ...FONTS.body3, marginLeft: SIZES.padding },
+  deliveryContainer: { flexDirection: "row", marginLeft: 16 },
   card: {
     backgroundColor: COLORS.white,
     borderRadius: 10,
@@ -590,5 +458,19 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 5,
     width: "45%",
+  },
+  itemIMage: {
+    width: "100%",
+    height: 140,
+    marginBottom: 10,
+    borderTopLeftRadius: 6,
+    borderTopRightRadius: 6,
+  },
+  priceContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginHorizontal: 6,
+    marginBottom: 10,
   },
 });

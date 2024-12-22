@@ -41,7 +41,6 @@ export default CommonSheetView;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1c1540",
   },
   contentContainer: {
     flex: 7,

@@ -6,76 +6,23 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  StatusBar,
 } from "react-native";
 import React, { useState } from "react";
 import { COLORS, FONTS, SIZES, images, icons } from "../../constants";
-import {
-  initialCurrentLocation,
-  categoryData,
-  restaurantData,
-} from "../../constants/DummyData";
+import { categoryData, restaurantData } from "../../constants/DummyData";
 import { useRouter } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Feather from "@expo/vector-icons/Feather";
 import CommonInput from "../Components/CommonInput";
 
-const Home = () => {
+const HomeScreen = () => {
   const navigation = useRouter();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [restaurantList, setRestautantList] = useState(restaurantData);
   const [searchedValue, setSearchedValue] = useState(null);
 
-  function renderHeader() {
-    return (
-      <View style={styles.HeaderContainer}>
-        <TouchableOpacity style={styles.menuContainer}>
-          <AntDesign name="menuunfold" size={24} color="black" />
-        </TouchableOpacity>
-        {/* <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: COLORS.lightGray3,
-                borderRadius: SIZES.radius,
-                width: '70%',
-                height: '100%',
-              }}>
-              <Text style={{...FONTS.h3}}>
-                {initialCurrentLocation?.streetName}
-              </Text>
-            </View>
-          </View> */}
-        <View style={styles.locationContainer}>
-          <Text style={styles.locationText}>DELIVER TO</Text>
-          <View style={styles.locationSubContainer}>
-            <Text style={{ fontWeight: "400", marginRight: 6 }}>
-              Halal Lab Office
-            </Text>
-            <MaterialCommunityIcons name="menu-down" size={24} color="black" />
-          </View>
-        </View>
-        <TouchableOpacity
-          style={{
-            width: 50,
-            justifyContent: "center",
-            borderRadius: 25,
-            alignItems: "center",
-            backgroundColor: "black",
-            marginRight: 12,
-          }}
-        >
-          {/* <Image
-              source={icons.basket}
-              style={{width: 30, height: 25}}
-              resizeMode="contain"
-            /> */}
-          <Feather name="shopping-bag" size={24} color="white" />
-        </TouchableOpacity>
-      </View>
-    );
-  }
   function renderMainCategories() {
     const onSelectCategory = (category) => {
       const listComponent = restaurantData.filter((a) =>
@@ -83,15 +30,11 @@ const Home = () => {
       );
       setRestautantList(listComponent);
       setSelectedCategory(category);
-      // console.log(restaurantList);
     };
     return (
-      <View style={{ marginHorizontal: 20, marginTop: 10 }}>
-        <Text style={{ marginBottom: 10, fontSize: 15, letterSpacing: 1 }}>
-          Hey Halal,{" "}
-          <Text style={{ fontWeight: "800", fontSize: 16 }}>
-            Good Afternoon!
-          </Text>
+      <View style={styles.GreetingContainer}>
+        <Text style={styles.GreetingText}>
+          Hey Halal, <Text style={styles.GreetingSubText}>Good Afternoon!</Text>
         </Text>
         <CommonInput
           placeHolder={" Search dishes, restaurants"}
@@ -107,7 +50,6 @@ const Home = () => {
             <TouchableOpacity
               style={{
                 padding: SIZES.padding,
-                paddingBottom: SIZES.padding * 2,
                 alignItems: "center",
                 justifyContent: "center",
                 backgroundColor:
@@ -117,12 +59,12 @@ const Home = () => {
                 borderRadius: SIZES.radius,
                 marginRight: SIZES.padding,
                 ...styles.card,
-                marginTop: 8,
+                marginBottom: 5,
                 flexDirection: "row",
               }}
               onPress={() => onSelectCategory(item)}
             >
-              <View>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <View
                   style={{
                     flexDirection: "row",
@@ -152,6 +94,7 @@ const Home = () => {
                         ? COLORS.white
                         : COLORS.black,
                     ...FONTS.body5,
+                    marginLeft: 10,
                   }}
                 >
                   {item.name}
@@ -168,9 +111,8 @@ const Home = () => {
     const renderItem = ({ item }) => {
       return (
         <TouchableOpacity
-          style={{ marginBottom: SIZES.padding * 2, marginTop: 10 }}
+          style={styles.restuarantList}
           onPress={() => {
-            console.log(item, "ffff");
             navigation.navigate({
               pathname: "/Container/RestaurantScreen",
               params: {
@@ -179,30 +121,14 @@ const Home = () => {
             });
           }}
         >
-          <View style={{ marginBottom: SIZES.padding }}>
+          <View style={styles.restaurantImage}>
             <Image
               source={item.photo}
-              style={{ width: "100%", height: 200, borderRadius: SIZES.radius }}
+              style={styles.restaurantImage}
               resizeMode="cover"
             />
-            {/* <View
-                style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  height: 50,
-                  borderTopRightRadius: SIZES.radius,
-                  borderBottomRightRadius: 2,
-                  backgroundColor: COLORS.white,
-                  alignItems: 'center',
-                  width: SIZES.width * 0.4,
-                  justifyContent: 'center',
-                }}>
-                <Text style={{...FONTS.h4}}>{item.duration}</Text>
-              </View> */}
           </View>
-          <Text style={{ fontSize: 18, letterSpacing: 1, fontWeight: "600" }}>
-            {item.name}
-          </Text>
+          <Text style={styles.restaurantName}>{item.name}</Text>
           <View style={{ flexDirection: "row" }}>
             {item.categories.map((categoryId) => {
               function getCategoryNameById(categoryId) {
@@ -241,31 +167,8 @@ const Home = () => {
                 </View>
               );
             })}
-            {/* price */}
-            {/* {[{price: 100}].map(priceRating => {
-                  return (
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        marginLeft: 10,
-                      }}
-                      key={priceRating.price}>
-                      <Text style={{...FONTS.body3, color: COLORS.darkgray}}>
-                        $ {priceRating.price}
-                      </Text>
-                    </View>
-                  );
-                })} */}
           </View>
-          <View
-            style={{
-              flexDirection: "row",
-              marginTop: SIZES.padding,
-              alignItems: "center",
-            }}
-          >
+          <View style={styles.reviewContainer}>
             <Image
               source={icons.star}
               style={{ width: 15, height: 15 }}
@@ -275,13 +178,7 @@ const Home = () => {
               {item.rating}
             </Text>
             <View style={{ flexDirection: "row", marginLeft: 14 }}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
+              <View style={styles.deliveryContainer}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <MaterialCommunityIcons
                     name="truck-delivery"
@@ -291,13 +188,7 @@ const Home = () => {
                   <Text style={{ marginLeft: 8 }}>Free</Text>
                 </View>
 
-                <View
-                  style={{
-                    flexDirection: "row",
-                    marginLeft: 12,
-                    alignItems: "center",
-                  }}
-                >
+                <View style={styles.timeContainer}>
                   <MaterialCommunityIcons
                     name="av-timer"
                     size={22}
@@ -326,58 +217,34 @@ const Home = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor={COLORS.lightGray4} barStyle="dark-content" />
       {/* Header */}
-      {/* {renderHeader()} */}
       <View style={styles.HeaderContainer}>
         <TouchableOpacity style={styles.menuContainer}>
           <AntDesign name="menuunfold" size={24} color="black" />
         </TouchableOpacity>
-        {/* <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: COLORS.lightGray3,
-                borderRadius: SIZES.radius,
-                width: '70%',
-                height: '100%',
-              }}>
-              <Text style={{...FONTS.h3}}>
-                {initialCurrentLocation?.streetName}
-              </Text>
-            </View>
-          </View> */}
         <View style={styles.locationContainer}>
           <Text style={styles.locationText}>DELIVER TO</Text>
           <View style={styles.locationSubContainer}>
-            <Text style={{ fontWeight: "400", marginRight: 6 }}>
-              Halal Lab Office
-            </Text>
+            <Text style={styles.usersLocationText}>Halal Lab Office</Text>
             <MaterialCommunityIcons name="menu-down" size={24} color="black" />
           </View>
         </View>
-        <TouchableOpacity
-          style={{
-            width: 50,
-            justifyContent: "center",
-            borderRadius: 25,
-            alignItems: "center",
-            backgroundColor: "black",
-            marginRight: 12,
-          }}
-        >
+        <TouchableOpacity style={styles.cartIcon}>
           <Feather name="shopping-bag" size={24} color="white" />
         </TouchableOpacity>
       </View>
+
       {/* Main Categories */}
       {renderMainCategories()}
+
       {/* Restuarent List */}
       {renderRestuarentList()}
     </SafeAreaView>
   );
 };
 
-export default Home;
+export default HomeScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -396,8 +263,8 @@ const styles = StyleSheet.create({
   },
   HeaderContainer: {
     flexDirection: "row",
-    height: 50,
     marginHorizontal: 12,
+    marginTop: 10,
   },
   menuContainer: {
     width: 50,
@@ -419,6 +286,48 @@ const styles = StyleSheet.create({
   },
   locationSubContainer: {
     flexDirection: "row",
+    alignItems: "center",
+  },
+  usersLocationText: {
+    fontWeight: "400",
+    marginRight: 6,
+  },
+  cartIcon: {
+    width: 50,
+    justifyContent: "center",
+    borderRadius: 25,
+    alignItems: "center",
+    backgroundColor: "black",
+    marginRight: 12,
+  },
+  GreetingContainer: { marginHorizontal: 20, marginTop: 18, marginBottom: 12 },
+  GreetingText: {
+    marginBottom: 10,
+    fontSize: 15,
+    letterSpacing: 1,
+    marginBottom: 16,
+  },
+  GreetingSubText: { fontWeight: "800", fontSize: 16 },
+  restuarantList: { marginBottom: SIZES.padding * 2, marginTop: 5 },
+  restaurantImage: { marginBottom: SIZES.padding },
+
+  restaurantImage: { width: "100%", height: 200, borderRadius: SIZES.radius },
+
+  restaurantName: { fontSize: 18, letterSpacing: 1, fontWeight: "600" },
+
+  reviewContainer: {
+    flexDirection: "row",
+    marginTop: SIZES.padding,
+    alignItems: "center",
+  },
+  deliveryContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  timeContainer: {
+    flexDirection: "row",
+    marginLeft: 12,
     alignItems: "center",
   },
 });

@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  StatusBar,
 } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
@@ -12,6 +13,7 @@ import { useRouter } from "expo-router";
 import CommonButton from "../Components/CommonButton";
 import CommonSheetView from "../Components/CommonSheetView";
 import CommonInput from "../Components/CommonInput";
+import { COLORS } from "../../constants";
 
 const index = () => {
   const navigation = useRouter();
@@ -31,10 +33,16 @@ const index = () => {
       mainTitle={"Login"}
       subTitle={"Please sign in to your existing account"}
     >
+      <StatusBar backgroundColor={COLORS.lightGray4} barStyle="dark-content" />
       <View style={styles.sheetContent}>
         {/* Email Input */}
         <Text style={styles.fieldsName}>Email</Text>
-        <CommonInput placeHolder={"example@gmail.com"} value={email} onChange={setEmail} typeofKeyBoard={"email-address"}/>
+        <CommonInput
+          placeHolder={"example@gmail.com"}
+          value={email}
+          onChange={setEmail}
+          typeofKeyBoard={"email-address"}
+        />
 
         {/* Password Input */}
         <Text style={styles.fieldsName}>Password</Text>
