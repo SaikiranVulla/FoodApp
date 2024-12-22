@@ -25,7 +25,7 @@ const OTPVerificationScreen = () => {
   }, [countdown]);
 
   const handleVerify = () => {
-    navigation.navigate({
+    navigation.replace({
       pathname: "/Container/HomeScreen",
     });
   };

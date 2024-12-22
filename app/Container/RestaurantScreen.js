@@ -6,11 +6,10 @@ import {
   FlatList,
   Image,
   SafeAreaView,
-  ScrollView,
   StatusBar,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { SIZES, COLORS, icons, images, FONTS } from "../../constants";
+import { SIZES, COLORS, icons } from "../../constants";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Feather from "@expo/vector-icons/Feather";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
@@ -27,8 +26,6 @@ const RestaurantScreen = () => {
   const { item } = useLocalSearchParams();
   const navigation = useRouter();
   const [restaurant, setRestaurant] = useState(null);
-  const [cartItems, setCartItems] = useState([]);
-  const [finalPrice, setFinalPrice] = useState(0);
   const [selectedItem, setSelectedItem] = useState(null);
 
   useEffect(() => {
@@ -37,37 +34,6 @@ const RestaurantScreen = () => {
       setRestaurant(parsedItem);
     }
   }, [item]);
-
-  function editOrder(action, menuItem) {
-    let index = cartItems.findIndex((item) => item.menuId === menuItem.menuId);
-    console.log("index", index);
-    console.log("before update", cartItems);
-    let totalAmount = 0;
-    if (index > -1) {
-      if (action == "+") {
-        menuItem["qty"] = menuItem["qty"] + 1;
-        totalAmount = finalPrice + menuItem.price;
-      } else {
-        menuItem["qty"] = menuItem["qty"] - 1;
-        totalAmount = finalPrice - menuItem.price;
-      }
-      cartItems[index] = menuItem;
-      console.log("updated Item", menuItem);
-      if (menuItem["qty"] === 0) {
-        cartItems.splice(index, 1);
-      }
-      setCartItems([...cartItems]);
-      console.log("after update", cartItems);
-      setFinalPrice(totalAmount);
-    } else {
-      if (action == "+") {
-        menuItem["qty"] = 1;
-        totalAmount = finalPrice + menuItem.price;
-        setCartItems([...cartItems, menuItem]);
-        setFinalPrice(totalAmount);
-      }
-    }
-  }
 
   function renderHeader() {
     return (
@@ -83,9 +49,7 @@ const RestaurantScreen = () => {
           <Ionicons name="chevron-back" size={24} color="black" />
         </TouchableOpacity>
         <View style={styles.titleTextContainer}>
-          <View>
-            <Text style={styles.titleText}>Restuarant New</Text>
-          </View>
+          <Text style={styles.titleText}>Restaurant View</Text>
         </View>
         <TouchableOpacity activeOpacity={0.7} style={styles.moreContainer}>
           <Feather name="more-horizontal" size={24} color="black" />
@@ -117,212 +81,35 @@ const RestaurantScreen = () => {
           />
           <Text style={styles.starRating}>{restaurant?.rating}</Text>
           <View style={styles.deliveryContainer}>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <MaterialCommunityIcons
-                  name="truck-delivery"
-                  size={30}
-                  color="#FF7A00"
-                />
-                <Text style={{ marginLeft: 8, fontSize: 16 }}>Free</Text>
-              </View>
-
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginLeft: 16,
-                  alignItems: "center",
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="av-timer"
-                  size={30}
-                  color="#FF7A00"
-                />
-                <Text style={{ marginLeft: 8, fontSize: 16 }}>
-                  {restaurant?.duration}
-                </Text>
-              </View>
-            </View>
+            <MaterialCommunityIcons
+              name="truck-delivery"
+              size={30}
+              color="#FF7A00"
+            />
+            <Text style={styles.deliveryText}>Free</Text>
+          </View>
+          <View style={styles.deliveryContainer}>
+            <MaterialCommunityIcons name="av-timer" size={30} color="#FF7A00" />
+            <Text style={styles.deliveryText}>{restaurant?.duration}</Text>
           </View>
         </View>
       </View>
     );
   }
 
-  // function renderOrderInfo() {
-  //   function renderDots() {
-  //     const dotPosition = Animated.divide(scrollX, SIZES.width);
-  //     return (
-  //       <View style={{ height: 30 }}>
-  //         <View
-  //           style={{
-  //             flexDirection: "row",
-  //             alignItems: "center",
-  //             justifyContent: "center",
-  //             height: SIZES.padding,
-  //           }}
-  //         >
-  //           {restaurant?.menu.map((item, index) => {
-  //             const opacity = dotPosition.interpolate({
-  //               inputRange: [index - 1, index, index + 1],
-  //               outputRange: [0.3, 1, 0.3],
-  //               extrapolate: "clamp",
-  //             });
-
-  //             const dotSize = dotPosition.interpolate({
-  //               inputRange: [index - 1, index, index + 1],
-  //               outputRange: [SIZES.base * 0.8, 10, SIZES.base * 0.8],
-  //               extrapolate: "clamp",
-  //             });
-
-  //             const dotColor = dotPosition.interpolate({
-  //               inputRange: [index - 1, index, index + 1],
-  //               outputRange: [COLORS.darkgray, COLORS.primary, COLORS.darkgray],
-  //               extrapolate: "clamp",
-  //             });
-  //             return (
-  //               <Animated.View
-  //                 key={index}
-  //                 opacity={opacity}
-  //                 style={{
-  //                   marginHorizontal: 6,
-  //                   borderRadius: SIZES.radius,
-  //                   width: dotSize,
-  //                   height: dotSize,
-  //                   backgroundColor: dotColor,
-  //                 }}
-  //               />
-  //             );
-  //           })}
-  //         </View>
-  //       </View>
-  //     );
-  //   }
-  //   return (
-  //     <View>
-  //       {renderDots()}
-  //       <View
-  //         style={{
-  //           backgroundColor: COLORS.white,
-  //           borderTopLeftRadius: 40,
-  //           borderTopRightRadius: 40,
-  //         }}
-  //       >
-  //         <View
-  //           style={{
-  //             flexDirection: "row",
-  //             justifyContent: "space-between",
-  //             paddingHorizontal: SIZES.padding * 3,
-  //             paddingVertical: SIZES.padding * 2,
-  //             borderBottomColor: COLORS.lightGray2,
-  //             borderBottomWidth: 1,
-  //           }}
-  //         >
-  //           <Text style={{ ...FONTS.h3 }}>
-  //             {cartItems.length} items in Cart
-  //           </Text>
-  //           <Text style={{ ...FONTS.h3 }}>$ {finalPrice?.toFixed(2)}</Text>
-  //         </View>
-  //         <View
-  //           style={{
-  //             flexDirection: "row",
-  //             justifyContent: "space-between",
-  //             paddingHorizontal: SIZES.padding * 3,
-  //             paddingVertical: SIZES.padding * 2,
-  //           }}
-  //         >
-  //           <View style={{ flexDirection: "row" }}>
-  //             <Image
-  //               source={icons.pin}
-  //               style={{ width: 20, height: 20, tintColor: COLORS.darkgray }}
-  //               resizeMode="contain"
-  //             />
-  //             <Text style={{ marginLeft: SIZES.padding, ...FONTS.h4 }}>
-  //               Location
-  //             </Text>
-  //           </View>
-  //           <View style={{ flexDirection: "row" }}>
-  //             <Image
-  //               source={icons.master_card}
-  //               resizeMode="contain"
-  //               style={{
-  //                 width: 20,
-  //                 height: 20,
-  //                 tintColor: COLORS.darkgray,
-  //               }}
-  //             />
-  //             <Text style={{ marginLeft: SIZES.padding, ...FONTS.h4 }}>
-  //               8888
-  //             </Text>
-  //           </View>
-  //         </View>
-  //         {/* Order Button */}
-  //         <View
-  //           style={{
-  //             padding: SIZES.padding * 2,
-  //             alignItems: "center",
-  //             justifyContent: "center",
-  //           }}
-  //         >
-  //           <TouchableOpacity
-  //             style={{
-  //               width: SIZES.width * 0.9,
-  //               borderRadius: SIZES.radius,
-  //               alignItems: "center",
-  //               padding: SIZES.padding,
-  //               backgroundColor: COLORS.primary,
-  //             }}
-  //             onPress={() =>
-  //               navigation.navigate("Order", { restaurant: restaurant })
-  //             }
-  //           >
-  //             <Text style={{ color: COLORS.white, ...FONTS.h2 }}>Order</Text>
-  //           </TouchableOpacity>
-  //         </View>
-  //       </View>
-  //       <View>
-  //         <View
-  //           style={{
-  //             position: "absolute",
-  //             bottom: -34,
-  //             left: 0,
-  //             right: 0,
-  //             height: 34,
-  //             backgroundColor: COLORS.white,
-  //           }}
-  //         ></View>
-  //       </View>
-  //     </View>
-  //   );
-  // }
-  function renderOrderInfo() {
-    return <View></View>;
-  }
-
-  const handlePress = (item) => {
-    setSelectedItem(item.label);
-  };
-
-  const renderItem = ({ item }) => (
+  const renderCategoryItem = ({ item }) => (
     <TouchableOpacity
-      onPress={() => handlePress(item)}
+      onPress={() => setSelectedItem(item.label)}
       style={{
         backgroundColor:
           selectedItem === item.label ? COLORS.primary : COLORS.lightGray3,
         borderRadius: 30,
-        width: 120,
+        width: 80,
         justifyContent: "center",
-        paddingVertical: 8,
+        paddingVertical: 10,
         marginVertical: 15,
-        marginRight: 6,
-        marginHorizontal: 12,
+        marginRight: 12,
+        // marginHorizontal: 12,
       }}
     >
       <Text
@@ -336,18 +123,18 @@ const RestaurantScreen = () => {
     </TouchableOpacity>
   );
 
-  const menuItem = ({ item }) => (
+  const renderMenuItem = ({ item }) => (
     <TouchableOpacity
       activeOpacity={0.7}
-      onPress={() => {
+      onPress={() =>
         navigation.navigate({
           pathname: "/Container/DetailScreen",
           params: {
             item: JSON.stringify(item),
             restaurant: JSON.stringify(restaurant),
           },
-        });
-      }}
+        })
+      }
       style={styles.card}
     >
       <Image source={item.photo} resizeMode="cover" style={styles.itemIMage} />
@@ -363,31 +150,29 @@ const RestaurantScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      \
       <StatusBar backgroundColor={COLORS.lightGray4} barStyle="dark-content" />
-      {/* HeaderBar */}
-      {renderHeader()}
-      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-        {/* Food Info */}
-        {renderFoodInfo()}
-        <View>
-          <FlatList
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            data={RestuarantItem}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.label}
-          />
-        </View>
-        <View>
-          <FlatList
-            data={restaurant?.menu}
-            keyExtractor={(item) => item.menuId.toString()}
-            renderItem={menuItem}
-            numColumns={2}
-          />
-        </View>
-      </ScrollView>
+      <FlatList
+        ListHeaderComponent={
+          <>
+            {renderHeader()}
+            {renderFoodInfo()}
+            <FlatList
+              style={{ marginHorizontal: 12 }}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={RestuarantItem}
+              renderItem={renderCategoryItem}
+              keyExtractor={(item) => item.label}
+            />
+          </>
+        }
+        data={restaurant?.menu}
+        keyExtractor={(item) => item.menuId.toString()}
+        renderItem={renderMenuItem}
+        numColumns={2}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 20 }}
+      />
     </SafeAreaView>
   );
 };
@@ -410,12 +195,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   titleTextContainer: { flex: 1, justifyContent: "center", marginLeft: 10 },
-  titleText: {
-    fontFamily: "NotoSans-Bold",
-    fontSize: 16,
-    fontWeight: "600",
-    letterSpacing: 1,
-  },
+  titleText: { fontSize: 16, fontWeight: "600" },
   moreContainer: {
     width: 50,
     justifyContent: "center",
@@ -425,47 +205,22 @@ const styles = StyleSheet.create({
   },
   foodInfoContainer: { marginHorizontal: 12, marginTop: 20 },
   mainRestaurantImage: { borderRadius: 10, height: 200, width: 360 },
-  restaurantName: {
-    fontSize: 18,
-    letterSpacing: 1,
-    fontWeight: "600",
-    marginTop: 10,
-  },
-  restaurantDescription: {
-    color: COLORS.darkgray,
-    letterSpacing: 0.6,
-    fontSize: 16,
-    fontWeight: "400",
-    textAlign: "justify",
-    marginTop: 6,
-  },
+  restaurantName: { fontSize: 18, fontWeight: "600", marginTop: 10 },
+  restaurantDescription: { color: COLORS.darkgray, fontSize: 16, marginTop: 6 },
   feedBackContainer: {
     flexDirection: "row",
-    marginTop: SIZES.padding,
+    marginTop: 10,
     alignItems: "center",
   },
   starImage: { width: 25, height: 25 },
-  starRating: { ...FONTS.body3, marginLeft: SIZES.padding },
-  deliveryContainer: { flexDirection: "row", marginLeft: 16 },
+  starRating: { marginLeft: 10 },
   card: {
     backgroundColor: COLORS.white,
     borderRadius: 10,
-    marginVertical: 10,
-    marginHorizontal: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 5,
+    margin: 10,
     width: "45%",
   },
-  itemIMage: {
-    width: "100%",
-    height: 140,
-    marginBottom: 10,
-    borderTopLeftRadius: 6,
-    borderTopRightRadius: 6,
-  },
+  itemIMage: { width: "100%", height: 140, borderTopLeftRadius: 6 },
   priceContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -473,4 +228,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 6,
     marginBottom: 10,
   },
+  deliveryContainer: {
+    flexDirection: "row",
+    marginLeft: 16,
+    alignItems: "center",
+  },
+  deliveryText: { marginLeft: 8, fontSize: 16 },
 });

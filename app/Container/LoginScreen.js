@@ -23,7 +23,7 @@ const index = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const handleLoginPress = () => {
-    navigation.navigate({
+    navigation.replace({
       pathname: "/Container/OTPVerificationScreen",
     });
   };

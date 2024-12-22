@@ -19,7 +19,7 @@ import CommonInput from "../Components/CommonInput";
 
 const HomeScreen = () => {
   const navigation = useRouter();
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState({ id: 1 });
   const [restaurantList, setRestautantList] = useState(restaurantData);
   const [searchedValue, setSearchedValue] = useState(null);
 
@@ -41,6 +41,13 @@ const HomeScreen = () => {
           value={searchedValue}
           onChange={() => console.log("dfhvdf")}
         />
+        <View style={styles.categoryHeader}>
+          <Text style={styles.categoryText}>All Categories</Text>
+          <View style={styles.subCategory}>
+            <Text style={styles.seeText}>See All </Text>
+            <AntDesign name="right" size={14} color="black" />
+          </View>
+        </View>
         <FlatList
           data={categoryData}
           horizontal
@@ -59,7 +66,7 @@ const HomeScreen = () => {
                 borderRadius: SIZES.radius,
                 marginRight: SIZES.padding,
                 ...styles.card,
-                marginBottom: 5,
+                marginBottom: 10,
                 flexDirection: "row",
               }}
               onPress={() => onSelectCategory(item)}
@@ -70,24 +77,23 @@ const HomeScreen = () => {
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "center",
-                    width: 50,
-                    height: 50,
+                    width: 40,
+                    height: 40,
                     backgroundColor:
                       selectedCategory?.id == item.id
                         ? COLORS.white
                         : COLORS.lightGray2,
-                    borderRadius: 30,
+                    borderRadius: 20,
                   }}
                 >
                   <Image
                     source={item.icon}
-                    style={{ width: 30, height: 30 }}
+                    style={{ width: 25, height: 25 }}
                     resizeMode="cover"
                   />
                 </View>
                 <Text
                   style={{
-                    textAlign: "center",
                     marginTop: SIZES.padding,
                     color:
                       selectedCategory?.id == item.id
@@ -95,6 +101,7 @@ const HomeScreen = () => {
                         : COLORS.black,
                     ...FONTS.body5,
                     marginLeft: 10,
+                    marginBottom: 6,
                   }}
                 >
                   {item.name}
@@ -202,10 +209,23 @@ const HomeScreen = () => {
         </TouchableOpacity>
       );
     };
+
+    const renderHeader = () => {
+      return (
+        <View style={styles.categoryHeader}>
+          <Text style={styles.categoryText}>Open Restaurants</Text>
+          <View style={styles.subCategory}>
+            <Text style={styles.seeText}>See All </Text>
+            <AntDesign name="right" size={14} color="black" />
+          </View>
+        </View>
+      );
+    };
     return (
       <FlatList
         data={restaurantList}
         keyExtractor={(item) => item.id}
+        ListHeaderComponent={renderHeader}
         renderItem={renderItem}
         contentContainerStyle={{
           paddingHorizontal: SIZES.padding * 2,
@@ -308,12 +328,17 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   GreetingSubText: { fontWeight: "800", fontSize: 16 },
-  restuarantList: { marginBottom: SIZES.padding * 2, marginTop: 5 },
+  restuarantList: { marginBottom: SIZES.padding * 2 },
   restaurantImage: { marginBottom: SIZES.padding },
 
-  restaurantImage: { width: "100%", height: 200, borderRadius: SIZES.radius },
+  restaurantImage: { width: "100%", height: 200, borderRadius: 20 },
 
-  restaurantName: { fontSize: 18, letterSpacing: 1, fontWeight: "600" },
+  restaurantName: {
+    fontSize: 18,
+    letterSpacing: 1,
+    fontWeight: "600",
+    marginTop: 8,
+  },
 
   reviewContainer: {
     flexDirection: "row",
@@ -329,5 +354,20 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginLeft: 12,
     alignItems: "center",
+  },
+  categoryHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 10,
+  },
+  subCategory: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  categoryText: {
+    fontSize: 18,
+  },
+  seeText: {
+    marginBottom: 2,
   },
 });

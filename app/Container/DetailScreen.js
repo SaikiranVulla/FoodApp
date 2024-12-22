@@ -117,7 +117,7 @@ const DetailScreen = () => {
               color="#FF7A00"
             />
             <Text style={styles.deliveryText}>Free</Text>
-            <View style={styles.deliveryText}>
+            <View style={styles.freeDeliveryContainer}>
               <MaterialCommunityIcons
                 name="av-timer"
                 size={30}
@@ -222,10 +222,10 @@ const styles = StyleSheet.create({
   },
   mainTextView: { flex: 1, justifyContent: "center", marginLeft: 10 },
   mainText: {
-    fontFamily: "NotoSans-Bold",
+    // fontFamily: "NotoSans-Bold",
     fontSize: 16,
     fontWeight: "600",
-    letterSpacing: 1,
+    // letterSpacing: 1,
   },
   subMainView: { marginHorizontal: 12, padding: 4 },
   imageContainer: {
@@ -261,9 +261,7 @@ const styles = StyleSheet.create({
   },
   itemDescription: {
     color: COLORS.darkgray,
-    letterSpacing: 0.6,
     fontSize: 16,
-    fontWeight: "400",
     textAlign: "justify",
     marginTop: 6,
   },

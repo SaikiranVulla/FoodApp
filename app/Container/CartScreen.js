@@ -65,7 +65,7 @@ const CartScreen = () => {
             </Text>
             <MaterialIcons name="highlight-remove" size={30} color="red" />
           </View>
-          <Text style={styles.itemPrice}>${cartList?.price}</Text>
+          <Text style={styles.itemPrice}>$ {cartList?.price}</Text>
           <View style={styles.lastItemContainer}>
             <Text style={styles.sizeText}>{cartList?.size}</Text>
             <View style={styles.quantityContainer}>
