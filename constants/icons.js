@@ -23,31 +23,51 @@ export const basket = require("../assets/icons/shopping-basket.png");
 export const star = require("../assets/icons/star.png");
 export const sushi = require("../assets/icons/sushi.png");
 export const user = require("../assets/icons/user.png");
+export const butter = require("../assets/icons/butter.png");
+export const cheese = require("../assets/icons/cheese.png");
+export const chicken = require("../assets/icons/chicken-leg.png");
+export const curry = require("../assets/icons/curry.png");
+export const food = require("../assets/icons/food.png");
+export const ginger = require("../assets/icons/ginger.png");
+export const onion = require("../assets/icons/onion.png");
+export const salt = require("../assets/icons/salt.png");
+export const tomato = require("../assets/icons/tomato.png");
+export const tomato_sauce = require("../assets/icons/tomato-sauce.png");
 
 export default {
-    back,
-    car,
-    cutlery,
-    donut,
-    drink,
-    fire,
-    fries,
-    hamburger,
-    hotdog,
-    like,
-    list,
-    location,
-    master_card,
-    nearby,
-    noodle,
-    pin,
-    pizza,
-    red_pin,
-    rice_bowl,
-    salad,
-    search,
-    basket,
-    star,
-    sushi,
-    user,
-}
+  back,
+  car,
+  cutlery,
+  donut,
+  drink,
+  fire,
+  fries,
+  hamburger,
+  hotdog,
+  like,
+  list,
+  location,
+  master_card,
+  nearby,
+  noodle,
+  pin,
+  pizza,
+  red_pin,
+  rice_bowl,
+  salad,
+  search,
+  basket,
+  star,
+  sushi,
+  user,
+  butter,
+  cheese,
+  chicken,
+  curry,
+  food,
+  ginger,
+  onion,
+  salt,
+  tomato,
+  tomato_sauce,
+};

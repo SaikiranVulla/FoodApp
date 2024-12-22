@@ -83,7 +83,7 @@ const Home = () => {
       );
       setRestautantList(listComponent);
       setSelectedCategory(category);
-      console.log(restaurantList);
+      // console.log(restaurantList);
     };
     return (
       <View style={{ marginHorizontal: 20, marginTop: 10 }}>
@@ -169,14 +169,15 @@ const Home = () => {
       return (
         <TouchableOpacity
           style={{ marginBottom: SIZES.padding * 2, marginTop: 10 }}
-          onPress={() =>
+          onPress={() => {
+            console.log(item, "ffff");
             navigation.navigate({
               pathname: "/Container/RestaurantScreen",
               params: {
-                item: item,
+                item: JSON.stringify(item),
               },
-            })
-          }
+            });
+          }}
         >
           <View style={{ marginBottom: SIZES.padding }}>
             <Image
