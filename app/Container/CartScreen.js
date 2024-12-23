@@ -19,6 +19,7 @@ import CommonButton from "../Components/CommonButton";
 const CartScreen = () => {
   const [cartList, setCartList] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const [amount, setAmount] = useState();
   const { cartItem } = useLocalSearchParams();
   const navigation = useRouter();
 
@@ -26,6 +27,7 @@ const CartScreen = () => {
     if (cartItem) {
       const parsedCartItem = JSON.parse(cartItem);
       setCartList(parsedCartItem);
+      setAmount(parsedCartItem.price);
     }
   }, [cartItem]);
 
@@ -34,6 +36,32 @@ const CartScreen = () => {
       pathname: "/Container/HomeScreen",
     });
   };
+
+  const reduceQty = () => {
+    if (quantity > 0) {
+      setQuantity((prevState) => prevState - 1);
+      setAmount((prev) => prev - cartList?.price);
+    }
+  };
+
+  const increaseQty = () => {
+    setQuantity((prevState) => prevState + 1);
+    setAmount((prev) => prev + amount);
+  };
+
+  if (quantity == 0) {
+    return (
+      <View style={styles.emptyContainer}>
+        <StatusBar backgroundColor={"black"} />
+        <View style={styles.emptyCart}>
+          <Text style={styles.emptyCartText}>Cart is Empty</Text>
+        </View>
+        <View style={styles.buttonContainer}>
+          <CommonButton title={"GO BACK"} action={handlePress} />
+        </View>
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -65,15 +93,23 @@ const CartScreen = () => {
             </Text>
             <MaterialIcons name="highlight-remove" size={30} color="red" />
           </View>
-          <Text style={styles.itemPrice}>$ {cartList?.price}</Text>
+          <Text style={styles.itemPrice}>$ {amount}</Text>
           <View style={styles.lastItemContainer}>
             <Text style={styles.sizeText}>{cartList?.size}</Text>
             <View style={styles.quantityContainer}>
-              <TouchableOpacity activeOpacity={0.7} style={styles.qtyButton}>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={reduceQty}
+                style={styles.qtyButton}
+              >
                 <Text style={styles.qtyText}>-</Text>
               </TouchableOpacity>
               <Text style={styles.qtyShow}>{quantity}</Text>
-              <TouchableOpacity activeOpacity={0.7} style={styles.qtyButton}>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={increaseQty}
+                style={styles.qtyButton}
+              >
                 <Text style={styles.qtyText}>+</Text>
               </TouchableOpacity>
             </View>
@@ -88,7 +124,7 @@ const CartScreen = () => {
         <CommonInput placeHolder={"2118 Thornridge Cir, Syracuse"} />
         <View style={styles.totalPriceContainer}>
           <Text>
-            TOTAL: <Text style={{ fontSize: 20 }}>$96</Text>
+            TOTAL: <Text style={{ fontSize: 20 }}>${amount}</Text>
           </Text>
           <Text style={styles.breakDownText}>BreakDown{">"}</Text>
         </View>
@@ -160,5 +196,24 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     textDecorationLine: "underline",
     letterSpacing: 1,
+  },
+  emptyContainer: {
+    flex: 1,
+    backgroundColor: "#080808",
+    // marginHorizontal: 12,
+  },
+  emptyCart: {
+    flex: 0.3,
+    // justifyContent: "center",
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+  // emptySub
+  emptyCartText: {
+    fontSize: 28,
+    color: COLORS.white,
+  },
+  buttonContainer: {
+    marginHorizontal: 12,
   },
 });

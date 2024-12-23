@@ -17,7 +17,6 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import { SIZES, COLORS, icons, images, FONTS } from "../../constants";
-
 import { inGridents } from "../../constants/DummyData";
 import CommonHeader from "../Components/CommonHeader";
 
