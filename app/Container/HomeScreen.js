@@ -39,7 +39,6 @@ const HomeScreen = () => {
         <CommonInput
           placeHolder={" Search dishes, restaurants"}
           value={searchedValue}
-          onChange={() => console.log("dfhvdf")}
         />
         <View style={styles.categoryHeader}>
           <Text style={styles.categoryText}>All Categories</Text>

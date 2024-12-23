@@ -19,7 +19,7 @@ import CommonButton from "../Components/CommonButton";
 const CartScreen = () => {
   const [cartList, setCartList] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [amount, setAmount] = useState();
+  const [amount, setAmount] = useState(0);
   const { cartItem } = useLocalSearchParams();
   const navigation = useRouter();
 
@@ -46,7 +46,7 @@ const CartScreen = () => {
 
   const increaseQty = () => {
     setQuantity((prevState) => prevState + 1);
-    setAmount((prev) => prev + amount);
+    setAmount((prev) => prev + cartList?.price);
   };
 
   if (quantity == 0) {

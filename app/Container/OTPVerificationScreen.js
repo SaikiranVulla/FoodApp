@@ -56,7 +56,7 @@ const OTPVerificationScreen = () => {
           </Text>
         </TouchableOpacity>
       </View>
-      <OtpInput numberOfDigits={4} onTextChange={(text) => console.log(text)} />
+      <OtpInput numberOfDigits={4} />
       <CommonButton title={"VERIFY"} action={handleVerify} />
     </CommonSheetView>
   );
